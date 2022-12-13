@@ -26,13 +26,13 @@ void build_http_header(char *http_header, char *hostname, char *path, int port, 
 // int connect_endServer(char *hostname, int port, char *http_header);
 int connect_endServer(char *hostname, int port);
 
-// 1.클라이언트와의 fd를 클라이언트용 rio에 연결(Rio_readinitb)한다. rio는 Registered Input/Output 라는 소켓 API 이다. 메시지를 보낼 수 있는 텍스트창으로 보면 됨.
-// 2.클라이언트의 요청을 한줄 읽어들여서(Rio_readlineb) 메서드와 URI, HTTP 버전을 얻고, URI에서 목적지 호스트와 포트를 뽑아낸다.
-// 3.목적지 호스트와 포트를 가지고 서버용 fd를 생성하고, 서버용 rio에 연결(Rio_readinitb)한다.
-// 4.클라이언트가 보낸 첫줄을 이미 읽어 유실되었고, HTTP 버전을 바꾸거나 추가 헤더를 붙일 필요가 있으므로, 
-//   클라이언트가 보내는 메시지를 한줄씩 읽어들이면서(Rio_readlineb) 재조합하여 서버에 보낼 HTTP 요청메시지를 새로 생성해준다.
-// 5.서버에 요청메시지를 보낸다.(Rio_writen)
-// 6.서버 응답이 오면 클라이언트에게 전달한다. (Rio_readnb, Rio_writen)
+// 1. 클라이언트와의 fd를 클라이언트용 rio에 연결(Rio_readinitb)함
+//    a. rio는 Registered Input/Output 라는 소켓 API 임 - 메시지를 보낼 수 있는 텍스트창으로 보면 됨.
+// 2. 클라이언트의 요청을 한줄 읽어들여서(Rio_readlineb) 메서드와 URI, HTTP 버전을 얻고, URI에서 목적지 호스트와 포트를 뽑아냄
+// 3. 목적지 호스트와 포트를 가지고 서버용 fd를 생성하고, 서버용 rio에 연결(Rio_readinitb)함
+// 4. 클라이언트가 보낸 첫줄을 이미 읽어 유실되었고, HTTP 버전을 바꾸거나 추가 헤더를 붙일 필요가 있음 → 클라이언트가 보내는 메시지를 한줄씩 읽어들이면서(Rio_readlineb) 재조합하여 서버에 보낼 HTTP 요청메시지를 새로 생성해줌
+// 5. 서버에 요청메시지를 보냄(Rio_writen)
+// 6. 서버 응답이 오면 클라이언트에게 전달함 (Rio_readnb, Rio_writen)
 
 int main(int argc, char **argv)
 {
